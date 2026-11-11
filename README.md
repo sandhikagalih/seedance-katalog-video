@@ -2,7 +2,7 @@
 
 👉 Get your Seedance 2.5 API Key on BytePlus: https://bit.ly/4B3FJiP
 
-Source code dari video WPU tentang otomatisasi video produk pakai **Seedance 2.5 API**: tiap produk baru di katalog langsung dibikinin video 16:9 & 9:16, lengkap sama nomor task, status, dan laporan biaya. Link video: [YOUTUBE_LINK]. Prompt yang dipakai di video: [PROMPT_PACK_LINK].
+Source code dari video WPU tentang otomatisasi video produk pakai **Seedance 2.5 API**: tiap produk baru di katalog langsung dibikinin video 16:9 & 9:16, lengkap sama nomor task, status, dan laporan biaya. Link video: [YOUTUBE_LINK]. Prompt yang dipakai di video: https://gist.github.com/sandhikagalih/48e5c131101ba621ccae67d9c58f6a98
 
 Tool internal untuk katalog produk dan pembuatan video melalui Seedance 2.5 BytePlus. Dibuat dengan Node.js, Express, SQLite bawaan Node, dan HTML/CSS/JavaScript biasa.
 
