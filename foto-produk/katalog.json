@@ -1,0 +1,16 @@
+[
+  {
+    "slug": "hoodie-wpu-navy",
+    "nama": "Hoodie WPU Navy",
+    "kategori": "Hoodie",
+    "deskripsi": "Hoodie premium bertema programming dari komunitas WPU, warna navy dengan motif titik koma di bagian depan. Bahan fleece tebal dan hangat, cocok untuk coding marathon.",
+    "foto": ["hoodie-navy-1.jpeg", "hoodie-navy-2.jpeg"]
+  },
+  {
+    "slug": "kaos-wpu-hitam",
+    "nama": "Kaos WPU Hitam",
+    "kategori": "Kaos",
+    "deskripsi": "Kaos premium bertema programming dari komunitas WPU, warna hitam dengan motif titik koma di bagian depan. Bahan cotton combed 30s, nyaman dipakai sehari-hari.",
+    "foto": ["tshirt-black-1.jpeg", "tshirt-black-2.jpeg"]
+  }
+]

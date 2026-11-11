@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Katalog produk dan studio video internal WPU Store">
+  <title>Video Studio · WPU Store</title>
+  <link rel="icon" href="/foto-produk/logo-wpustore-teal.png">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a href="/" class="brand"><img src="/foto-produk/logo-wpustore-teal.png" alt="WPU Store"><span>WPU<span class="brand-light">STORE</span><small>CONTENT WORKSPACE</small></span></a>
+    <div class="workspace">WORKSPACE <span>INTERNAL</span></div>
+    <nav aria-label="Navigasi utama">
+      <button class="nav-item active" data-tab="catalog"><span aria-hidden="true">▦</span> Katalog produk <span id="nav-count" class="count">0</span></button>
+      <button class="nav-item" data-tab="tasks"><span aria-hidden="true">◷</span> Dashboard task <span id="active-count" class="count">0</span></button>
+      <button class="nav-item" data-tab="costs"><span aria-hidden="true">$</span> Laporan biaya</button>
+    </nav>
+    <button class="button secondary" id="logout">Keluar</button>
+    <div class="sidebar-bottom"><span class="dot"></span> Seedance 2.5<small>Video generation · BytePlus</small><div class="team-avatar">W</div><strong>Tim WPU Store</strong><small>Ruang kerja e-commerce</small></div>
+  </aside>
+  <main>
+    <header class="topbar"><div>Workspace <span>/</span> <strong id="breadcrumb">Katalog produk</strong></div><span class="internal-label">● Internal tool</span></header>
+    <div class="page">
+      <div id="key-warning" class="notice" hidden>API belum terhubung. Isi <code>ARK_API_KEY</code> di file <code>.env</code> server lalu mulai ulang aplikasi. Katalog tetap bisa digunakan.</div>
+      <section class="page-heading">
+        <div><div class="eyebrow">WPU STORE / VIDEO STUDIO</div><h1 id="page-title">Dari produk, jadi cerita.</h1><p id="page-description">Kelola katalog dan buat video produk dalam satu tempat.</p></div>
+        <div class="heading-actions"><button class="button secondary" id="add-product">＋ Tambah produk</button><button class="button primary" id="generate-all">✧ Generate semua</button></div>
+      </section>
+      <section class="stats" aria-label="Ringkasan katalog">
+        <div class="stat"><span>Total produk <span class="stat-icon">▦</span></span><strong id="stat-products">0</strong><small>Produk dalam katalog</small></div>
+        <div class="stat"><span>Video selesai <span class="stat-icon">▷</span></span><strong id="stat-videos">0</strong><small>Siap untuk dipublikasikan</small></div>
+        <div class="stat"><span>Sedang diproses <span class="stat-icon teal">◷</span></span><strong id="stat-active">0</strong><small>Termasuk antrian & retry</small></div>
+        <div class="stat"><span>Perlu perhatian <span class="stat-icon amber">!</span></span><strong id="stat-failed">0</strong><small>Task yang perlu dijalankan ulang</small></div>
+      </section>
+      <section id="catalog-panel">
+        <div class="section-toolbar"><div><h2>Katalog produk <span id="catalog-count" class="pill">0 produk</span></h2><p>Dua format video untuk setiap produk. Satu alur kerja.</p></div><div class="filters"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Cari produk…" aria-label="Cari produk"></label><select id="category-filter" aria-label="Filter kategori"><option value="">Semua kategori</option></select></div></div>
+        <div id="product-grid" class="product-grid"><p>Memuat katalog…</p></div>
+        <div class="generation-note"><span aria-hidden="true">✧</span><div><strong>Dibuat untuk setiap channel.</strong><p>16:9 untuk halaman toko · 9:16 untuk media sosial · <span id="defaults">5 detik / 480p</span> · Audio aktif, tanpa watermark</p></div><span class="auto-label"><span class="dot"></span> Otomatis diperbarui</span></div>
+      </section>
+      <section id="tasks-panel" hidden>
+        <div class="section-toolbar"><div><h2>Riwayat task</h2><p>Satu baris untuk setiap percobaan. Waktu mengikuti zona waktu browser.</p></div><label>Status <select id="status-filter"><option value="">Semua status</option><option value="queued">Antri</option><option value="running">Jalan</option><option value="succeeded">Selesai</option><option value="failed">Gagal</option></select></label></div>
+        <div class="table-wrap">
+          <table class="task-table">
+            <colgroup>
+              <col class="col-product"><col class="col-format"><col class="col-task-id">
+              <col class="col-status"><col class="col-time"><col class="col-time">
+              <col class="col-attempt"><col class="col-spec"><col class="col-tokens">
+              <col class="col-error"><col class="col-action">
+            </colgroup>
+            <thead><tr><th>Produk</th><th>Format</th><th>Task ID</th><th>Status</th><th>Mulai</th><th>Selesai</th><th>Percobaan</th><th>Durasi / resolusi</th><th>Token</th><th>Alasan gagal</th><th>Video / aksi</th></tr></thead>
+            <tbody id="task-rows"></tbody>
+          </table>
+        </div>
+      </section>
+      <section id="costs-panel" hidden aria-label="Laporan biaya">
+        <div class="cost-test-banner">HASIL TES</div>
+        <div class="section-toolbar"><div><h2>Estimasi biaya dari database</h2><p>Seluruh riwayat · $6.40 per 1 juta token paket · <span id="cost-kurs"></span></p></div><a class="button secondary" href="/api/cost-report.csv" download>↓ Export CSV</a></div>
+        <p id="cost-error" class="form-error" role="alert"></p>
+        <div id="cost-summary" class="stats"></div>
+        <p id="cost-warning" class="notice" hidden></p>
+        <h2>Token dan biaya per kategori</h2>
+        <div class="table-wrap cost-table"><table><thead><tr><th>Kategori</th><th>Task unik</th><th>completion_tokens</th><th>Estimasi token paket</th><th>Estimasi USD</th><th>Estimasi IDR</th></tr></thead><tbody id="cost-groups"></tbody></table></div>
+        <h2>Video produk yang jadi</h2><p>Termasuk output revisi yang tersimpan, tanpa video tes. Setiap task sukses dihitung satu video.</p>
+        <div class="table-wrap cost-table"><table><thead><tr><th>Durasi</th><th>Resolusi</th><th>Jumlah video</th><th>Total durasi</th></tr></thead><tbody id="cost-specs"></tbody></table></div>
+        <h2>Rincian dan kategori job</h2><p>Riwayat lama dianggap Produk. Ubah ke Tes atau Revisi sesuai penggunaan; perubahan berlaku pada semua percobaan dalam job yang sama.</p>
+        <div class="table-wrap cost-table"><table><thead><tr><th>Produk / job</th><th>Task / attempt</th><th>Tujuan job</th><th>Kategori biaya</th><th>Status</th><th>Durasi / resolusi</th><th>completion_tokens</th><th>Rasio paket</th><th>Estimasi USD</th></tr></thead><tbody id="cost-rows"></tbody></table></div>
+        <div class="generation-note"><div><strong>Cara hitung</strong><p>Input teks/gambar: token × 1.671875 untuk 480p/720p, atau × 1.828125 untuk 1080p (CATATAN-API-SEEDANCE.md). Token paket × $6.40 ÷ 1.000.000. Rata-rata modal = seluruh biaya tercatat, termasuk tes dan gagal, ÷ video produk yang jadi.</p><p>Task ID yang sama dihitung sekali memakai token kumulatif terbesar yang tercatat. Percobaan gagal masuk gagal/retry; retry sukses mengikuti tujuan job. Task yang belum selesai dipisahkan. Token yang belum tersedia tidak dianggap gratis. Estimasi ini bukan tagihan resmi; rasio editing tidak dipakai karena aplikasi mengirim teks/gambar.</p></div></div>
+      </section>
+      <footer><span>WPU Store <span class="footer-dot">·</span> Video Studio</span><span id="sync-status" role="status">Menghubungkan…</span></footer>
+    </div>
+  </main>
+
+  <dialog id="product-dialog"><form id="product-form"><div class="dialog-header"><div class="eyebrow">KATALOG PRODUK</div><button type="button" class="close" data-close="product-dialog" aria-label="Tutup">×</button></div><h2>Tambah produk</h2><p>Dua video otomatis dibuat setelah produk disimpan.</p><label>Nama produk<input name="name" required maxlength="160" placeholder="Contoh: Hoodie WPU Navy"></label><label>Kategori<input name="category" required maxlength="80" placeholder="Contoh: Hoodie" list="category-options"></label><datalist id="category-options"></datalist><label>Deskripsi<textarea name="description" required maxlength="6000" rows="4" placeholder="Ceritakan bahan, warna, dan detail produk…"></textarea></label><label class="upload-box">Foto produk · tepat 2 foto<input name="photos" id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple required><small>JPEG, PNG, WebP · 300–6000 px · rasio 0.4–2.5 · &lt;30 MB/foto</small></label><div id="photo-previews" class="photo-previews"></div><p class="form-error" role="alert"></p><button class="button primary full" type="submit">Simpan & generate 2 video</button></form></dialog>
+  <dialog id="version-dialog"><form id="version-form"><div class="dialog-header"><div class="eyebrow">VERSI VIDEO BARU</div><button type="button" class="close" data-close="version-dialog" aria-label="Tutup">×</button></div><h2>Generate versi lain</h2><p id="version-product"></p><input name="productId" type="hidden"><div class="form-columns"><label>Format<select name="ratio"><option value="16:9">16:9 · Halaman toko</option><option value="9:16">9:16 · Media sosial</option></select></label><label>Durasi (detik)<input name="duration" type="number" min="4" max="30" step="1" required value="5"></label></div><label>Kategori biaya<select name="costCategory"><option value="revision">Revisi</option><option value="product">Produk</option><option value="test">Tes</option></select></label><label>Prompt manual <span class="optional">opsional</span><textarea name="prompt" rows="6" maxlength="12000" placeholder="Kosongkan untuk memakai prompt otomatis Bahasa Indonesia. Jika diisi, prompt ini dipakai persis. Gunakan @Image1, @Image2, dan @Image3 (logo)."></textarea></label><p class="helper">Ketiga gambar tetap dikirim. Untuk prompt manual, sertakan arahan tanpa orang dan tanpa teks tambahan. Audio aktif, watermark mati.</p><p class="form-error" role="alert"></p><button class="button primary full" type="submit">✧ Generate video</button></form></dialog>
+  <dialog id="video-dialog"><div class="dialog-header"><h2 id="video-title">Video produk</h2><button type="button" class="close" data-close="video-dialog" aria-label="Tutup">×</button></div><video id="video-player" controls playsinline preload="metadata"></video><a id="video-download" class="button secondary" download>Download video</a></dialog>
+  <div id="toast" role="status" hidden></div>
+</body>
+</html>
